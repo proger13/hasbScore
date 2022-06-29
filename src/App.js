@@ -3,8 +3,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea,Button,IconButton,Toolbar,AppBar } from '@mui/material';
+import { CardActionArea, Button, IconButton, Toolbar, AppBar, Popover,List,ListSubheader,ListItem,ListItemText} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+
 
 const GOODS = [
   {
@@ -38,7 +39,19 @@ const GOODS = [
     img: 'https://lh3.googleusercontent.com/rdzFnYHmRbJFLo9YYE21f7Ks0NPJN44ZFSsuy1SY-G2KyICN0HVqGCGKRqueLiRK1IMi-XLQShbhxiX_gylse_ob60aQO372eFSH=w361'
   },
 ]
+
 export default function ActionAreaCard() {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
   return (
     <div>
       <AppBar position="static">
@@ -55,10 +68,39 @@ export default function ActionAreaCard() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button ref={anchorEl} color="inherit" onClick={handleClick}>Login</Button>
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            <List
+              sx={{
+                width: '100%',
+                maxWidth: 360,
+                bgcolor: 'background.paper',
+                position: 'relative',
+                overflow: 'auto',
+                maxHeight: 300,
+                '& ul': { padding: 0 },
+              }}
+              subheader={<li />}
+            > 
+                    <ListSubheader>{`My bagage`}</ListSubheader>
+                    {GOODS.map((item) => (
+                      <ListItem key={`item-${item.title}`}>
+                        <ListItemText primary={`Item ${item.title}`} />
+                      </ListItem>
+                    ))}
+            </List>
+          </Popover>
         </Toolbar>
       </AppBar>
-      {GOODS.map(function(good){
+      {GOODS.map(function (good) {
         return (<Card sx={{ maxWidth: 345 }}>
           <CardActionArea>
             <CardMedia
@@ -76,8 +118,8 @@ export default function ActionAreaCard() {
               </Typography>
             </CardContent>
           </CardActionArea>
-          </Card>)
+        </Card>)
       })}
-      </div>
+    </div>
   );
 }
