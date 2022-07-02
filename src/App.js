@@ -3,10 +3,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, Button, IconButton, Toolbar, AppBar, Popover, List, ListSubheader, ListItem, ListItemText } from '@mui/material';
+import { CardActionArea, Button, IconButton, Toolbar, AppBar, Popover, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import useCookie from 'react-use-cookie';
-
+import {ListItemAvatar,Avatar,Divider} from '@mui/material'
 
 const GOODS = [
   {
@@ -103,25 +103,75 @@ export default function ActionAreaCard() {
               horizontal: 'left',
             }}
           >
-            <List
-              sx={{
-                width: '100%',
-                maxWidth: 360,
-                bgcolor: 'background.paper',
-                position: 'relative',
-                overflow: 'auto',
-                maxHeight: 300,
-                '& ul': { padding: 0 },
-              }}
-              subheader={<li />}
-            >
-              <ListSubheader>{`My bagage`}</ListSubheader>
-              {GOODS.map((item) => (
-                <ListItem key={`item-${item.title}`}>
-                  <ListItemText primary={`Item ${item.title}`} />
-                </ListItem>
-              ))}
-            </List>
+            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+      <Avatar sx={{ bgcolor: 'orange' }} variant="square">
+        N
+      </Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary="Brunch this weekend?"
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'inline' }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                ***
+              </Typography>
+              {"-----"}
+            </React.Fragment>
+          }
+        />
+      </ListItem>
+      <Divider variant="inset" component="li" />
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          img: 
+        </ListItemAvatar>
+        <ListItemText
+          primary="Summer BBQ"
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'inline' }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                ***
+              </Typography>
+              {"-----"}
+            </React.Fragment>
+          }
+        />
+      </ListItem>
+      <Divider variant="inset" component="li" />
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          img: 
+        </ListItemAvatar>
+        <ListItemText
+          primary="Oui Oui"
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'inline' }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                ***
+              </Typography>
+              {'-----'}
+            </React.Fragment>
+          }
+        />
+      </ListItem>
+    </List>
           </Popover>
         </Toolbar>
       </AppBar>
