@@ -6,8 +6,20 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea, Button, IconButton, Toolbar, AppBar, Popover, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import useCookie from 'react-use-cookie';
-import {ListItemAvatar,Avatar,Divider} from '@mui/material'
+import {ListItemAvatar,Avatar,Divider,Modal,Box} from '@mui/material'
+import { ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 const GOODS = [
   {
     id: 1,
@@ -58,6 +70,11 @@ export default function ActionAreaCard() {
   };
   const open = Boolean(anchorEl);
   const [basket, setBasket] = useCookie('basket', '[]');
+  
+  const [open1, setOpen1] = React.useState(false);
+  const handleOpen = () => setOpen1(true);
+  const handleClose1 = () => setOpen1(false);
+
 
 
   function push(good) {
@@ -81,6 +98,21 @@ export default function ActionAreaCard() {
     <div>
       <AppBar position="static">
         <Toolbar>
+      <Modal
+        open={open}
+        onClose={handleClose1}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal>
           <IconButton
             size="large"
             edge="start"
@@ -93,7 +125,10 @@ export default function ActionAreaCard() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <Button ref={anchorEl} color="inherit" onClick={handleClick}>Login</Button>
+          <Button variant='contained' onClick={handleOpen}>оформить заказ </Button>
+          <IconButton ref={anchorEl} color="inherit" onClick={handleClick}>
+            <ShoppingCartIcon> </ShoppingCartIcon> 
+          </IconButton>
           <Popover
             open={open}
             anchorEl={anchorEl}
