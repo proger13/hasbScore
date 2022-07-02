@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import useCookie from 'react-use-cookie';
 import {ListItemAvatar,Avatar,Divider,Modal,Box} from '@mui/material'
 import { ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
+import { width } from '@mui/system';
 
 const style = {
   position: 'absolute',
@@ -59,10 +60,11 @@ const GOODS = [
 ]
 
 export default function ActionAreaCard() {
+  const buttonRef = React.useRef()
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = () => {
+    setAnchorEl(buttonRef.current);
   };
 
   const handleClose = () => {
@@ -75,6 +77,7 @@ export default function ActionAreaCard() {
   const handleOpen = () => setOpen1(true);
   const handleClose1 = () => setOpen1(false);
 
+  const mbasket = JSON.parse(basket)
 
 
   function push(good) {
@@ -91,6 +94,7 @@ export default function ActionAreaCard() {
       good.count = 1
       setBasket(JSON.stringify([...currentBasket, good]))
     }
+    handleClick()
   }
 
 
@@ -99,7 +103,7 @@ export default function ActionAreaCard() {
       <AppBar position="static">
         <Toolbar>
       <Modal
-        open={open}
+        open={open1}
         onClose={handleClose1}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -126,7 +130,7 @@ export default function ActionAreaCard() {
             News
           </Typography>
           <Button variant='contained' onClick={handleOpen}>оформить заказ </Button>
-          <IconButton ref={anchorEl} color="inherit" onClick={handleClick}>
+          <IconButton ref={buttonRef} color="inherit" onClick={handleClick}>
             <ShoppingCartIcon> </ShoppingCartIcon> 
           </IconButton>
           <Popover
@@ -138,81 +142,39 @@ export default function ActionAreaCard() {
               horizontal: 'left',
             }}
           >
-            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-      <Avatar sx={{ bgcolor: 'orange' }} variant="square">
-        N
-      </Avatar>
-        </ListItemAvatar>
-        <ListItemText
-          primary="Brunch this weekend?"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                ***
-              </Typography>
-              {"-----"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          img: 
-        </ListItemAvatar>
-        <ListItemText
-          primary="Summer BBQ"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                ***
-              </Typography>
-              {"-----"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          img: 
-        </ListItemAvatar>
-        <ListItemText
-          primary="Oui Oui"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                ***
-              </Typography>
-              {'-----'}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
+            <List sx={{ width: '100%', minWidth: 360, bgcolor: 'background.paper' }}>
+            {mbasket.map((item) => (
+           
+              <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+              <img src={item.img} style={{width: 40, height: 40}}/>
+              </ListItemAvatar>
+              <ListItemText
+                primary={`Имя: ${item.title}`}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                    </Typography>
+                    {`Кол-во: ${item.count} шт`}
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+              
+              ))}
     </List>
           </Popover>
         </Toolbar>
       </AppBar>
+      <div style={{display: "flex",flexWrap: "wrap" }}>
       {GOODS.map(function (good) {
         return (
-          <Card sx={{ maxWidth: 345 }}>
+            <Card sx={{ minWidth: 345, margin: 3}}>
             <CardActionArea>
               <CardMedia
                 component="img"
@@ -234,6 +196,7 @@ export default function ActionAreaCard() {
         )
       })
       }
-    </div >
+      </div>
+    </div>
   );
 }
