@@ -9,18 +9,10 @@ import useCookie from 'react-use-cookie';
 import {ListItemAvatar,Avatar,Divider,Modal,Box} from '@mui/material'
 import { ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
 import { width } from '@mui/system';
+import { useFormik } from 'formik';
+import { Checkout } from './components/Checkout';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+
 const GOODS = [
   {
     id: 1,
@@ -97,26 +89,23 @@ export default function ActionAreaCard() {
     handleClick()
   }
 
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+    },
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
 
   return (
     <div>
       <AppBar position="static">
         <Toolbar>
-      <Modal
-        open={open1}
-        onClose={handleClose1}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal>
+      
           <IconButton
             size="large"
             edge="start"
@@ -197,6 +186,7 @@ export default function ActionAreaCard() {
       })
       }
       </div>
+      <Checkout open={open1} handleClose={handleClose1}></Checkout>
     </div>
   );
 }
