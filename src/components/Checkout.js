@@ -1,4 +1,8 @@
-import { Modal, Box, TextField, Grid } from '@mui/material'
+import { Modal, Box, TextField, Grid, Typography, ListItemText, ListItemAvatar, ListItem, List, Divider } from '@mui/material'
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import useCookie from 'react-use-cookie';
+import { useFormik } from 'formik';
 
 const style = {
     position: 'absolute',
@@ -10,9 +14,22 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
+
 export const Checkout = (props) => {
     const { open, handleClose } = props;
-
+    const [basket, setBasket] = useCookie('basket', '[]');
+    const mbasket = JSON.parse(basket)
+    const formik = useFormik({
+        initialValues: {
+            firstName: '',
+            lastName: '',
+            patronymic: '',
+        },
+        onSubmit: values => {
+            console.log(123)
+            fetch('http://localhost:5000/sendmail')
+        },
+    });
     return (
         <Modal
             open={open}
@@ -20,19 +37,56 @@ export const Checkout = (props) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={4}>
-                        <TextField fullWidth label="Имя" variant="standard" />
+            <form onSubmit={formik.handleSubmit}>
+                <Box sx={style}>
+                    <List sx={{ width: '100%', minWidth: 360, bgcolor: 'background.paper' }}>
+                        {mbasket.map((item) => (
+                            <>
+                                <ListItem alignItems="flex-start">
+                                    <ListItemAvatar>
+                                        <img src={item.img} style={{ width: 40, height: 40 }} />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={`Имя: ${item.title}`}
+                                        secondary={
+                                            <React.Fragment>
+                                                <Typography
+                                                    sx={{ display: 'inline' }}
+                                                    component="span"
+                                                    variant="body2"
+                                                    color="text.primary"
+                                                >
+                                                </Typography>
+                                                {`Кол-во: ${item.count} шт`}
+                                            </React.Fragment>
+                                        }
+                                    />
+                                </ListItem>
+                                <Divider />
+                            </>
+                        ))}
+                    </List>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} md={4}>
+                            <TextField fullWidth name='firstName' label="Имя" variant="standard" value={formik.values.firstName} onChange={formik.handleChange} />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <TextField fullWidth name='lastName' label="Фамилия" variant="standard" value={formik.values.lastName} onChange={formik.handleChange} />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <TextField fullWidth name='patronymic' label="Отчество" variant="standard" value={formik.values.patronymic} onChange={formik.handleChange} />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} md={4}>
-                        <TextField fullWidth label="Фамилия" variant="standard" />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <TextField fullWidth label="Отчество" variant="standard" />
-                    </Grid>
-                </Grid>
-            </Box>
+                    <div style={{
+                        marginTop: 30,
+                        display: 'flex',
+                        justifyContent: 'flex-end'
+                    }}>
+
+                        <Button variant="contained" type='submit'>Купить</Button>
+                    </div>
+                </Box>
+            </form>
         </Modal>
     )
 }
