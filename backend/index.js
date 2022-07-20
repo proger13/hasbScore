@@ -40,7 +40,7 @@ app.post('/sendmail', async (req, res) => {
     
     html += `<h1>${cost} рублей</h1>`
     const info = await transporter.sendMail({
-        from: '"Абдулкадыр Магомедов" <abdulkadirmagomedov@gmail.com>', // sender address
+        from: '"Л" <abdulkadirmagomedov@gmail.com>', // sender address
         to: "gerry.fisherr@gmail.com", // list of receivers
         subject: "Hello ✔", // Subject line
         text: "А девочки будут?", // plain text body
