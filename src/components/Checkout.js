@@ -26,8 +26,17 @@ export const Checkout = (props) => {
             patronymic: '',
         },
         onSubmit: values => {
-            console.log(123)
-            fetch('http://localhost:5000/sendmail')
+            console.log(values, mbasket)
+           fetch('http://localhost:5000/sendmail', {
+               method: 'POST',
+               body: JSON.stringify({
+                    values,
+                    mbasket
+               }),
+               headers: {
+                    'Content-Type': 'application/json'
+               }
+           })
         },
     });
     return (
